@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Web Control — Rapports</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<aside class="sidebar">
+    <div class="sidebar-logo">
+        <span>🛡️</span> Web Control
+    </div>
+    <nav>
+        <a href="index.html"      class="nav-item"><span class="icon">📊</span> Dashboard</a>
+        <a href="logs.html"       class="nav-item"><span class="icon">📋</span> Journal DNS</a>
+        <a href="domains.html"    class="nav-item"><span class="icon">🚫</span> Domaines bloqués</a>
+        <a href="categories.html" class="nav-item"><span class="icon">🏷️</span> Catégories</a>
+        <a href="policies.html"   class="nav-item"><span class="icon">📜</span> Politiques</a>
+        <a href="reports.html"    class="nav-item active"><span class="icon">📈</span> Rapports</a>
+    </nav>
+</aside>
+
+<div class="main">
+    <div class="topbar">
+        <div>
+            <h1>Rapports</h1>
+            <div class="subtitle">Générer et exporter des rapports d'activité</div>
+        </div>
+    </div>
+
+    <div class="content">
+
+        <!-- Générateur -->
+        <div class="card">
+            <div class="card-title">🔧 Générer un rapport</div>
+            <div style="display:flex;gap:16px;flex-wrap:wrap;align-items:flex-end;">
+                <div class="form-group" style="margin-bottom:0">
+                    <label>Type de rapport</label>
+                    <select id="report-type">
+                        <option value="GENERAL">Activité générale</option>
+                        <option value="BLOCKED">Domaines bloqués</option>
+                        <option value="CLIENTS">Clients les plus actifs</option>
+                        <option value="CATEGORIES">Par catégorie</option>
+                    </select>
+                </div>
+                <div class="form-group" style="margin-bottom:0">
+                    <label>Date de début</label>
+                    <input type="datetime-local" id="report-from">
+                </div>
+                <div class="form-group" style="margin-bottom:0">
+                    <label>Date de fin</label>
+                    <input type="datetime-local" id="report-to">
+                </div>
+                <button class="btn btn-primary" onclick="generateReport()">📊 Générer</button>
+            </div>
+
+            <!-- Raccourcis période -->
+            <div style="display:flex;gap:8px;margin-top:16px;">
+                <button class="btn btn-outline btn-sm" onclick="setPeriod(1)">Aujourd'hui</button>
+                <button class="btn btn-outline btn-sm" onclick="setPeriod(7)">7 derniers jours</button>
+                <button class="btn btn-outline btn-sm" onclick="setPeriod(30)">30 derniers jours</button>
+            </div>
+        </div>
+
+        <!-- Aperçu résultat -->
+        <div class="card" id="report-preview" style="display:none;">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
+                <div class="card-title" style="margin-bottom:0">📋 Aperçu du rapport</div>
+            </div>
+            <div id="preview-content"></div>
+        </div>
+
+        <!-- Historique -->
+        <div class="card">
+            <div class="card-title">🕐 Historique des rapports</div>
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Date de génération</th>
+                            <th>Type</th>
+                            <th>Période</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="reports-body">
+                        <tr class="loading-row"><td colspan="4">Chargement...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<div id="toast"></div>
+
+<script src="js/api.js"></script>
+<script src="js/reports.js"></script>
+</body>
+</html>

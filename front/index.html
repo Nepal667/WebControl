@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Web Control — Dashboard</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<aside class="sidebar">
+    <div class="sidebar-logo">
+        <span>🛡️</span> Web Control
+    </div>
+    <nav>
+        <a href="index.html"      class="nav-item active"><span class="icon">📊</span> Dashboard</a>
+        <a href="logs.html"       class="nav-item"><span class="icon">📋</span> Journal DNS</a>
+        <a href="domains.html"    class="nav-item"><span class="icon">🚫</span> Domaines bloqués</a>
+        <a href="categories.html" class="nav-item"><span class="icon">🏷️</span> Catégories</a>
+        <a href="policies.html"   class="nav-item"><span class="icon">📜</span> Politiques</a>
+        <a href="reports.html"    class="nav-item"><span class="icon">📈</span> Rapports</a>
+    </nav>
+</aside>
+
+<div class="main">
+    <div class="topbar">
+        <div>
+            <h1>Dashboard</h1>
+            <div class="subtitle">Supervision en temps réel du réseau</div>
+        </div>
+        <button class="btn btn-outline" onclick="loadAll()">🔄 Actualiser</button>
+    </div>
+
+    <div class="content">
+
+        <!-- Stats -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-label">Requêtes totales</div>
+                <div class="stat-value primary" id="stat-total">—</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Requêtes bloquées</div>
+                <div class="stat-value danger" id="stat-blocked">—</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Requêtes autorisées</div>
+                <div class="stat-value success" id="stat-allowed">—</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Taux de blocage</div>
+                <div class="stat-value warning" id="stat-rate">—</div>
+            </div>
+        </div>
+
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px;">
+
+            <!-- Top domaines -->
+            <div class="card">
+                <div class="card-title">🔝 Top 5 domaines consultés</div>
+                <div class="table-wrap">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Domaine</th>
+                                <th>Requêtes</th>
+                            </tr>
+                        </thead>
+                        <tbody id="top-domains-body">
+                            <tr class="loading-row"><td colspan="3">Chargement...</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Top bloqués -->
+            <div class="card">
+                <div class="card-title">🚫 Top 5 domaines bloqués</div>
+                <div class="table-wrap">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Domaine</th>
+                                <th>Blocages</th>
+                            </tr>
+                        </thead>
+                        <tbody id="top-blocked-body">
+                            <tr class="loading-row"><td colspan="3">Chargement...</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Derniers logs -->
+        <div class="card">
+            <div class="card-title">🕐 Dernières requêtes DNS</div>
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Heure</th>
+                            <th>Domaine</th>
+                            <th>IP Client</th>
+                            <th>Statut</th>
+                            <th>Temps (ms)</th>
+                        </tr>
+                    </thead>
+                    <tbody id="recent-logs-body">
+                        <tr class="loading-row"><td colspan="5">Chargement...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<div id="toast"></div>
+
+<script src="js/api.js"></script>
+<script src="js/dashboard.js"></script>
+</body>
+</html>

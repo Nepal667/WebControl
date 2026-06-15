@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Web Control — Domaines bloqués</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<aside class="sidebar">
+    <div class="sidebar-logo">
+        <span>🛡️</span> Web Control
+    </div>
+    <nav>
+        <a href="index.html"      class="nav-item"><span class="icon">📊</span> Dashboard</a>
+        <a href="logs.html"       class="nav-item"><span class="icon">📋</span> Journal DNS</a>
+        <a href="domains.html"    class="nav-item active"><span class="icon">🚫</span> Domaines bloqués</a>
+        <a href="categories.html" class="nav-item"><span class="icon">🏷️</span> Catégories</a>
+        <a href="policies.html"   class="nav-item"><span class="icon">📜</span> Politiques</a>
+        <a href="reports.html"    class="nav-item"><span class="icon">📈</span> Rapports</a>
+    </nav>
+</aside>
+
+<div class="main">
+    <div class="topbar">
+        <div>
+            <h1>Domaines bloqués</h1>
+            <div class="subtitle">Gérer les domaines de la liste de blocage</div>
+        </div>
+        <div style="display:flex;gap:10px;">
+            <button class="btn btn-outline" onclick="openModal('modal-import')">📂 Importer</button>
+            <button class="btn btn-primary" onclick="openAddModal()">+ Ajouter un domaine</button>
+        </div>
+    </div>
+
+    <div class="content">
+        <div class="card">
+            <div class="toolbar">
+                <div class="toolbar-left">
+                    <input type="search" id="filter-domain" placeholder="🔍 Rechercher..." style="width:260px">
+                    <select id="filter-category">
+                        <option value="">Toutes les catégories</option>
+                    </select>
+                </div>
+                <div class="toolbar-right">
+                    <span id="domain-count" style="font-size:13px;color:var(--text-muted)"></span>
+                </div>
+            </div>
+
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Domaine</th>
+                            <th>Catégorie</th>
+                            <th>Date d'ajout</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="domains-body">
+                        <tr class="loading-row"><td colspan="4">Chargement...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal ajout -->
+<div class="modal-overlay" id="modal-domain">
+    <div class="modal">
+        <div class="modal-title">Ajouter un domaine</div>
+        <div class="form-group">
+            <label>Domaine</label>
+            <input type="text" id="input-domain" placeholder="Ex: example.com">
+        </div>
+        <div class="form-group">
+            <label>Catégorie</label>
+            <select id="input-category">
+                <option value="">— Sans catégorie —</option>
+            </select>
+        </div>
+        <div class="modal-actions">
+            <button class="btn btn-outline" onclick="closeModal('modal-domain')">Annuler</button>
+            <button class="btn btn-primary" onclick="saveDomain()">Ajouter</button>
+        </div>
+    </div>
+</div>
+
+<!-- Modal import -->
+<div class="modal-overlay" id="modal-import">
+    <div class="modal">
+        <div class="modal-title">Importer des domaines</div>
+        <p style="font-size:13px;color:var(--text-muted);margin-bottom:16px;">
+            Fichier .txt avec un domaine par ligne.
+        </p>
+        <div class="form-group">
+            <label>Fichier</label>
+            <input type="file" id="import-file" accept=".txt" style="padding:6px;">
+        </div>
+        <div class="form-group">
+            <label>Catégorie</label>
+            <select id="import-category">
+                <option value="">— Sans catégorie —</option>
+            </select>
+        </div>
+        <div id="import-preview" style="font-size:13px;color:var(--text-muted);margin-bottom:8px;"></div>
+        <div class="modal-actions">
+            <button class="btn btn-outline" onclick="closeModal('modal-import')">Annuler</button>
+            <button class="btn btn-primary" onclick="importDomains()">Importer</button>
+        </div>
+    </div>
+</div>
+
+<!-- Modal suppression -->
+<div class="modal-overlay" id="modal-delete">
+    <div class="modal">
+        <div class="modal-title">Confirmer la suppression</div>
+        <p style="color:var(--text-muted);margin-bottom:8px;">Cette action est irréversible.</p>
+        <input type="hidden" id="delete-id">
+        <div class="modal-actions">
+            <button class="btn btn-outline" onclick="closeModal('modal-delete')">Annuler</button>
+            <button class="btn btn-danger" onclick="confirmDelete()">Supprimer</button>
+        </div>
+    </div>
+</div>
+
+<div id="toast"></div>
+
+<script src="js/api.js"></script>
+<script src="js/domains.js"></script>
+</body>
+</html>
