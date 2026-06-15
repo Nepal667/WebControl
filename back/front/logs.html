@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Web Control — Journal DNS</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<aside class="sidebar">
+    <div class="sidebar-logo">
+        <span>🛡️</span> Web Control
+    </div>
+    <nav>
+        <a href="index.html"      class="nav-item"><span class="icon">📊</span> Dashboard</a>
+        <a href="logs.html"       class="nav-item active"><span class="icon">📋</span> Journal DNS</a>
+        <a href="domains.html"    class="nav-item"><span class="icon">🚫</span> Domaines bloqués</a>
+        <a href="categories.html" class="nav-item"><span class="icon">🏷️</span> Catégories</a>
+        <a href="policies.html"   class="nav-item"><span class="icon">📜</span> Politiques</a>
+        <a href="reports.html"    class="nav-item"><span class="icon">📈</span> Rapports</a>
+    </nav>
+</aside>
+
+<div class="main">
+    <div class="topbar">
+        <div>
+            <h1>Journal DNS</h1>
+            <div class="subtitle">Historique des requêtes DNS du réseau</div>
+        </div>
+    </div>
+
+    <div class="content">
+        <div class="card">
+            <div class="toolbar">
+                <div class="toolbar-left">
+                    <input type="search" id="filter-domain" placeholder="🔍 Rechercher un domaine..." style="width:260px">
+                    <select id="filter-status">
+                        <option value="">Tous les statuts</option>
+                        <option value="ALLOWED">Autorisé</option>
+                        <option value="BLOCKED">Bloqué</option>
+                    </select>
+                </div>
+                <div class="toolbar-right">
+                    <button class="btn btn-outline" onclick="loadLogs()">🔄 Actualiser</button>
+                </div>
+            </div>
+
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Heure</th>
+                            <th>Domaine</th>
+                            <th>IP Client</th>
+                            <th>Statut</th>
+                            <th>Temps (ms)</th>
+                        </tr>
+                    </thead>
+                    <tbody id="logs-body">
+                        <tr class="loading-row"><td colspan="5">Chargement...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="pagination" id="pagination"></div>
+        </div>
+    </div>
+</div>
+
+<div id="toast"></div>
+
+<script src="js/api.js"></script>
+<script src="js/logs.js"></script>
+</body>
+</html>

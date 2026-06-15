@@ -1,0 +1,37 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/web_control_leger
+    username: web_control_user
+    password: web_control_pass
+    driver-class-name: org.postgresql.Driver
+
+
+  management:
+    endpoints:
+      web:
+        exposure:
+        include: health,info   # Exposer l'endpoint /actuator/health et /actuator/info
+    endpoint:
+      health:
+      show-details: always   # Afficher les détails de santé de manière plus complète
+
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+
+  flyway:
+    enabled: true
+    locations: classpath:db/migration
+    baseline-on-migrate: false
+
+server:
+  port: 8080
+
+pihole:
+  api:
+    url: http://localhost:8081
+    password: Admin1234

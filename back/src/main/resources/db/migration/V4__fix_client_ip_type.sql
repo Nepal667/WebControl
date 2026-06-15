@@ -1,0 +1,1 @@
+ALTER TABLE dns_log ALTER COLUMN client_ip TYPE VARCHAR(50) USING client_ip::text;
