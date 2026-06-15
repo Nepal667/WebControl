@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Web Control — Politiques</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<aside class="sidebar">
+    <div class="sidebar-logo">
+        <span>🛡️</span> Web Control
+    </div>
+    <nav>
+        <a href="index.html"      class="nav-item"><span class="icon">📊</span> Dashboard</a>
+        <a href="logs.html"       class="nav-item"><span class="icon">📋</span> Journal DNS</a>
+        <a href="domains.html"    class="nav-item"><span class="icon">🚫</span> Domaines bloqués</a>
+        <a href="categories.html" class="nav-item"><span class="icon">🏷️</span> Catégories</a>
+        <a href="policies.html"   class="nav-item active"><span class="icon">📜</span> Politiques</a>
+        <a href="reports.html"    class="nav-item"><span class="icon">📈</span> Rapports</a>
+    </nav>
+</aside>
+
+<div class="main">
+    <div class="topbar">
+        <div>
+            <h1>Politiques d'accès</h1>
+            <div class="subtitle">Gérer les politiques de filtrage</div>
+        </div>
+        <button class="btn btn-primary" onclick="openAddModal()">+ Nouvelle politique</button>
+    </div>
+
+    <div class="content">
+        <div id="policies-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:16px;">
+            <div style="text-align:center;padding:40px;color:var(--text-muted)">Chargement...</div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal ajout/édition -->
+<div class="modal-overlay" id="modal-policy">
+    <div class="modal">
+        <div class="modal-title" id="modal-title">Nouvelle politique</div>
+        <input type="hidden" id="edit-id">
+        <div class="form-group">
+            <label>Nom</label>
+            <input type="text" id="input-name" placeholder="Ex: Politique stricte">
+        </div>
+        <div class="form-group">
+            <label>Description</label>
+            <textarea id="input-description" rows="2" placeholder="Description..."></textarea>
+        </div>
+        <div class="form-group">
+            <label>Catégories incluses</label>
+            <div id="category-checkboxes" style="display:flex;flex-direction:column;gap:8px;max-height:200px;overflow-y:auto;padding:4px;"></div>
+        </div>
+        <div class="modal-actions">
+            <button class="btn btn-outline" onclick="closeModal('modal-policy')">Annuler</button>
+            <button class="btn btn-primary" onclick="savePolicy()">Enregistrer</button>
+        </div>
+    </div>
+</div>
+
+<!-- Modal suppression -->
+<div class="modal-overlay" id="modal-delete">
+    <div class="modal">
+        <div class="modal-title">Confirmer la suppression</div>
+        <p style="color:var(--text-muted);margin-bottom:8px;">Cette action est irréversible.</p>
+        <input type="hidden" id="delete-id">
+        <div class="modal-actions">
+            <button class="btn btn-outline" onclick="closeModal('modal-delete')">Annuler</button>
+            <button class="btn btn-danger" onclick="confirmDelete()">Supprimer</button>
+        </div>
+    </div>
+</div>
+
+<div id="toast"></div>
+
+<script src="js/api.js"></script>
+<script src="js/policies.js"></script>
+</body>
+</html>
