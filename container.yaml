@@ -1,0 +1,61 @@
+version: '3.8'
+
+services:
+
+  # ─────────────────────────────────────────────────────
+  # Container 1 : Pi-hole — Moteur DNS filtrant
+  # ─────────────────────────────────────────────────────
+  pihole:
+    image: pihole/pihole:latest
+    container_name: pihole-webcontrol
+    ports:
+      - "53:53/tcp"       # Requêtes DNS (TCP)
+      - "53:53/udp"       # Requêtes DNS (UDP)
+      - "8000:80"         # Interface admin Pi-hole + API REST
+    environment:
+      WEBPASSWORD: ${PIHOLE_WEBPASSWORD}
+      TZ: "Africa/Casablanca"
+      DNSMASQ_LISTENING: "all"
+      PIHOLE_DNS_: "8.8.8.8;8.8.4.4"
+    volumes:
+      - pihole-data:/etc/pihole
+      - pihole-dnsmasq:/etc/dnsmasq.d
+    networks:
+      - dns-net
+    restart: unless-stopped
+    cap_add:
+      - NET_ADMIN
+
+  # ─────────────────────────────────────────────────────
+  # Container 2 : PostgreSQL 15 — Base de données
+  # ─────────────────────────────────────────────────────
+  postgres:
+    image: postgres:15
+    container_name: postgres-webcontrol
+    ports:
+      - "5432:5432"       # Accessible depuis Spring Boot sur la machine hôte
+    environment:
+      POSTGRES_DB:       ${POSTGRES_DB}
+      POSTGRES_USER:     ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    volumes:
+      - pg-data:/var/lib/postgresql/data
+    networks:
+      - dns-net
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+# ─── Volumes persistants ───────────────────────────────
+volumes:
+  pg-data:
+  pihole-data:
+  pihole-dnsmasq:
+
+# ─── Réseau interne ────────────────────────────────────
+networks:
+  dns-net:
+    driver: bridge
